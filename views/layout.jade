@@ -1,0 +1,13 @@
+doctype 5
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/styles.css')
+    script(src='http://#{host}:35729/livereload.js')
+    script(src='/components/jquery/jquery.js')
+    script(src='/components/underscore/underscore.js')
+    script(src='/components/jquery-tmpl/jquery.tmpl.js')
+    script(src='/socket.io/socket.io.js')
+    meta(name='viewport', content='width=device-width,user-scalable=no')
+  body
+    block content

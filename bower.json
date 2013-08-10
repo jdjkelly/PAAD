@@ -1,11 +1,14 @@
 {
-  "name": "paad",
+  "name": "application-name",
   "version": "0.0.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ],
   "dependencies": {
-    "sass-bootstrap": "~2.3.0",
-    "requirejs": "~2.1.4",
-    "modernizr": "~2.6.2",
-    "jquery": "~1.9.1"
-  },
-  "devDependencies": {}
+    "jquery": "~1.9",
+    "underscore": "~1.5",
+    "jquery-tmpl": ""
+  }
 }
