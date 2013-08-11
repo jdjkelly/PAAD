@@ -1,32 +1,40 @@
 extends layout
 
 block content
-  script(type='text/javascript').
-    var socket = io.connect("http://#{host}:3000");
-  script(src='/javascripts/kit.js')
+  body
+    .container
+      script(type='text/javascript').
+        var socket = io.connect("http://#{host}:3000");
+      script(src='/javascripts/kit.js')
 
-  h1= title
-  h2 Server
+      .inner-container
 
-  a.play Play
-  a.stop Stop
-  input.bpm(type='number')
+        .key-wrapper
+          ul.row.indicators
+            li.indicator.k1
+            li.indicator.k2
+            li.indicator.k3
+            li.indicator.k4
+            li.indicator.k5
+            li.indicator.k6
+            li.indicator.k7
+            li.indicator.k8
+            li.indicator.k9
+            li.indicator.k10
+            li.indicator.k11
+            li.indicator.k12
+            li.indicator.k13
+            li.indicator.k14
+            li.indicator.k15
+            li.indicator.k16
 
-  .key-wrapper
-    ul.row
-      li.indicator.k1
-      li.indicator.k2
-      li.indicator.k3
-      li.indicator.k4
-      li.indicator.k5
-      li.indicator.k6
-      li.indicator.k7
-      li.indicator.k8
-      li.indicator.k9
-      li.indicator.k10
-      li.indicator.k11
-      li.indicator.k12
-      li.indicator.k13
-      li.indicator.k14
-      li.indicator.k15
-      li.indicator.k16
+      .panel
+
+        input.bpm(type='number')
+
+        .controls
+          a.stop Stop
+          a.play Play
+          a.record Record
+
+

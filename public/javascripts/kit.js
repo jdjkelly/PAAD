@@ -8,7 +8,7 @@
 
     Sequencer.prototype.notes = 16;
 
-    Sequencer.prototype.bpm = 360;
+    Sequencer.prototype.bpm = 120;
 
     Sequencer.prototype.activeNote = 0;
 
@@ -157,13 +157,13 @@
       return socket.emit("assignKitId", data);
     });
     socket.on("createSocket", function(data) {
-      $.tmpl("<ul id='${id}' class='row'><li class='key k1'>1</li><li class='key k2'>2</li><li class='key k3'>3</li><li class='key k4'>4</li><li class='key k5'>5</li><li class='key k6'>6</li><li class='key k7'>7</li><li class='key k8'>8</li><li class='key k9'>9</li><li class='key k10'>10</li><li class='key k11'>11</li><li class='key k12'>12</li><li class='key k13'>13</li><li class='key k14'>14</li><li class='key k15'>15</li><li class='key k16'>16</li></ul>", {
+      $.tmpl("<div class='track-group'><div class='track-title'></div><ul id='${id}' class='row'><li class='key k1'>1</li><li class='key k2'>2</li><li class='key k3'>3</li><li class='key k4'>4</li><li class='key k5'>5</li><li class='key k6'>6</li><li class='key k7'>7</li><li class='key k8'>8</li><li class='key k9'>9</li><li class='key k10'>10</li><li class='key k11'>11</li><li class='key k12'>12</li><li class='key k13'>13</li><li class='key k14'>14</li><li class='key k15'>15</li><li class='key k16'>16</li></ul></div>", {
         id: data
       }).appendTo(".key-wrapper");
       return sequencer.tracks.push(new Track(data, sequencer.tracks.length));
     });
     socket.on("deleteSocket", function(data) {
-      $("#" + data).remove();
+      $("#" + data).parent().remove();
       return sequencer.tracks = _.reject(sequencer.tracks, function(track) {
         return track.id === data;
       });
