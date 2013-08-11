@@ -7,6 +7,7 @@ class Sequencer
 
   play: ->
     return if @playInterval?
+    @backGroundTrackPlaying = window.playBackground(@backingTrackId) if @backingTrackId?
     @playInterval = setInterval =>
       @playing = true
       $(".indicator").removeClass("active")
@@ -35,9 +36,13 @@ class Sequencer
     if @playInterval?
       clearInterval(@playInterval)
       @playInterval = undefined
+      if @backGroundTrackPlaying?
+        @backGroundTrackPlaying.pause()
     else
       @activeNote = 0
       $(".indicator").removeClass("active")
+      $(".playing").removeClass("playing")
+      socket.emit("clearAll")
 
 class Track
   constructor: (@id, @index) ->
@@ -110,8 +115,8 @@ context = undefined
 bufferLoader = undefined
 window.loadedTracks = undefined
 
-window.kits = [["Kick", "Hat", "Thing", "Whatever", "Something", "Stuff", "Whatever", "Otherthing"]]
-window.selectedKit = 0
+window.kits = [["Kick", "Hat", "Thing", "Whatever", "Something", "Stuff", "Whatever", "Otherthing"], ["Bass", "Bell", "Corny", "Drums", "Electro", "Pianobell", "Woody", "Bass x2"],["Closed Hi Hat", "Crash", "Floor Tom", "Kick", "Open Hi Hat", "Rack Tom", "Ride", "Snare"]]
+window.selectedKit = 1
 
 audioInit = ->
   # Fix up prefixing
@@ -126,6 +131,22 @@ audioInit = ->
     "sounds/kit1/5.wav"
     "sounds/kit1/6.wav"
     "sounds/kit1/7.wav"
+    "sounds/kit2/bass.ogg"
+    "sounds/kit2/bell.ogg"
+    "sounds/kit2/corny4.ogg"
+    "sounds/kit2/drums.ogg"
+    "sounds/kit2/electro_4.ogg"
+    "sounds/kit2/pianobell.ogg"
+    "sounds/kit2/woody.ogg"
+    "sounds/kit2/bass_10.ogg"
+    "sounds/kit3/0.wav"
+    "sounds/kit3/1.wav"
+    "sounds/kit3/2.wav"
+    "sounds/kit3/3.wav"
+    "sounds/kit3/4.wav"
+    "sounds/kit3/5.wav"
+    "sounds/kit3/6.wav"
+    "sounds/kit3/7.wav"
   ], finishedLoading)
   bufferLoader.load()
 finishedLoading = (bufferList) ->
@@ -136,7 +157,14 @@ window.playSound = (buffer, time) ->
   source.buffer = buffer
   source.connect context.destination
   source.start time
-
+window.playBackground = (id) ->
+  url = "http://api.soundcloud.com/tracks/#{id}/stream?client_id=435a565aaa07ebba76881f95805f6bf7"
+  audio = new Audio()
+  audio.src = url
+  source = context.createMediaElementSource(audio)
+  source.connect(context.destination)
+  source.mediaElement.play()
+  source.mediaElement
 
 $(document).ready ->
   audioInit()
@@ -154,7 +182,7 @@ $(document).ready ->
     ).appendTo ".key-wrapper"
 
     sequencer.tracks.push new Track data, sequencer.tracks.length + 1
-
+    socket.emit("trackTitle", {id: data, title: window.kits[window.selectedKit][sequencer.tracks.length]})
 
   socket.on "deleteSocket", (data) ->
     $("#" + data).parent().remove()
@@ -183,16 +211,30 @@ $(document).ready ->
     $(".play").removeClass("active")
     sequencer.stop()
 
+  $(".record").click (event)->
+    $(this).addClass("active")
+
 
   $(".slider").noUiSlider(
-    range: [30, 280]
+    range: [30, 400]
     start: 130
     handles: 1
     step: 5
     slide: ->
-      $(".bpm .count").text($(@).val())
+      if $(@).val() > 300
+        $(".bpm .count").text("ERR")
+      else
+        $(".bpm .count").text $(@).val()
       sequencer.changeBpm $(@).val()
   )
 
+  $(".backing-track").change (event)->
+    sequencer.backingTrackId = $(@).val()
 
-
+  $(".load-track").click (event)->
+    sequencer.stop()
+    kit = window.prompt("Which kit?","Enter 0 through #{window.kits.length - 1}")
+    window.selectedKit = parseInt(kit)
+    _.each $(".track-title"), (title, index)->
+      $(title).text(window.kits[window.selectedKit][index])
+      socket.emit("trackTitle", {id: $(title).siblings("ul").attr("id"), title: window.kits[window.selectedKit][index]})

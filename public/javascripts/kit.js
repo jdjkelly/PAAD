@@ -19,6 +19,9 @@
       if (this.playInterval != null) {
         return;
       }
+      if (this.backingTrackId != null) {
+        this.backGroundTrackPlaying = window.playBackground(this.backingTrackId);
+      }
       return this.playInterval = setInterval(function() {
         _this.playing = true;
         $(".indicator").removeClass("active");
@@ -52,10 +55,15 @@
       this.playing = false;
       if (this.playInterval != null) {
         clearInterval(this.playInterval);
-        return this.playInterval = void 0;
+        this.playInterval = void 0;
+        if (this.backGroundTrackPlaying != null) {
+          return this.backGroundTrackPlaying.pause();
+        }
       } else {
         this.activeNote = 0;
-        return $(".indicator").removeClass("active");
+        $(".indicator").removeClass("active");
+        $(".playing").removeClass("playing");
+        return socket.emit("clearAll");
       }
     };
 
@@ -133,14 +141,14 @@
 
   window.loadedTracks = void 0;
 
-  window.kits = [["Kick", "Hat", "Thing", "Whatever", "Something", "Stuff", "Whatever", "Otherthing"]];
+  window.kits = [["Kick", "Hat", "Thing", "Whatever", "Something", "Stuff", "Whatever", "Otherthing"], ["Bass", "Bell", "Corny", "Drums", "Electro", "Pianobell", "Woody", "Bass x2"], ["Closed Hi Hat", "Crash", "Floor Tom", "Kick", "Open Hi Hat", "Rack Tom", "Ride", "Snare"]];
 
-  window.selectedKit = 0;
+  window.selectedKit = 1;
 
   audioInit = function() {
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     context = new AudioContext();
-    bufferLoader = new BufferLoader(context, ["sounds/kit1/0.wav", "sounds/kit1/1.wav", "sounds/kit1/2.wav", "sounds/kit1/3.wav", "sounds/kit1/4.wav", "sounds/kit1/5.wav", "sounds/kit1/6.wav", "sounds/kit1/7.wav"], finishedLoading);
+    bufferLoader = new BufferLoader(context, ["sounds/kit1/0.wav", "sounds/kit1/1.wav", "sounds/kit1/2.wav", "sounds/kit1/3.wav", "sounds/kit1/4.wav", "sounds/kit1/5.wav", "sounds/kit1/6.wav", "sounds/kit1/7.wav", "sounds/kit2/bass.ogg", "sounds/kit2/bell.ogg", "sounds/kit2/corny4.ogg", "sounds/kit2/drums.ogg", "sounds/kit2/electro_4.ogg", "sounds/kit2/pianobell.ogg", "sounds/kit2/woody.ogg", "sounds/kit2/bass_10.ogg", "sounds/kit3/0.wav", "sounds/kit3/1.wav", "sounds/kit3/2.wav", "sounds/kit3/3.wav", "sounds/kit3/4.wav", "sounds/kit3/5.wav", "sounds/kit3/6.wav", "sounds/kit3/7.wav"], finishedLoading);
     return bufferLoader.load();
   };
 
@@ -154,6 +162,17 @@
     source.buffer = buffer;
     source.connect(context.destination);
     return source.start(time);
+  };
+
+  window.playBackground = function(id) {
+    var audio, source, url;
+    url = "http://api.soundcloud.com/tracks/" + id + "/stream?client_id=435a565aaa07ebba76881f95805f6bf7";
+    audio = new Audio();
+    audio.src = url;
+    source = context.createMediaElementSource(audio);
+    source.connect(context.destination);
+    source.mediaElement.play();
+    return source.mediaElement;
   };
 
   $(document).ready(function() {
@@ -170,7 +189,11 @@
         id: data,
         name: window.kits[window.selectedKit][sequencer.tracks.length]
       }).appendTo(".key-wrapper");
-      return sequencer.tracks.push(new Track(data, sequencer.tracks.length + 1));
+      sequencer.tracks.push(new Track(data, sequencer.tracks.length + 1));
+      return socket.emit("trackTitle", {
+        id: data,
+        title: window.kits[window.selectedKit][sequencer.tracks.length]
+      });
     });
     socket.on("deleteSocket", function(data) {
       $("#" + data).parent().remove();
@@ -205,15 +228,38 @@
       $(".play").removeClass("active");
       return sequencer.stop();
     });
-    return $(".slider").noUiSlider({
-      range: [30, 280],
+    $(".record").click(function(event) {
+      return $(this).addClass("active");
+    });
+    $(".slider").noUiSlider({
+      range: [30, 400],
       start: 130,
       handles: 1,
       step: 5,
       slide: function() {
-        $(".bpm .count").text($(this).val());
+        if ($(this).val() > 300) {
+          $(".bpm .count").text("ERR");
+        } else {
+          $(".bpm .count").text($(this).val());
+        }
         return sequencer.changeBpm($(this).val());
       }
+    });
+    $(".backing-track").change(function(event) {
+      return sequencer.backingTrackId = $(this).val();
+    });
+    return $(".load-track").click(function(event) {
+      var kit;
+      sequencer.stop();
+      kit = window.prompt("Which kit?", "Enter 0 through " + (window.kits.length - 1));
+      window.selectedKit = parseInt(kit);
+      return _.each($(".track-title"), function(title, index) {
+        $(title).text(window.kits[window.selectedKit][index]);
+        return socket.emit("trackTitle", {
+          id: $(title).siblings("ul").attr("id"),
+          title: window.kits[window.selectedKit][index]
+        });
+      });
     });
   });
 

@@ -1,31 +1,35 @@
 extends layout
 
 block content
-  script(type='text/javascript').
-    var socket = io.connect("http://#{host}:3000");
-  script(src='/javascripts/client.js')
+  body.no-bg
+    script(type='text/javascript').
+      var socket = io.connect("http://#{host}:3000");
+    script(src='/javascripts/client.js')
 
-  h1= title
-  h2 Client
+    .full.hidden
+      .h1.center We're full, sorry :(
 
-  .key-wrapper-mobile
-    ul.row
-      li.key.k1(data-key='k1')
-      li.key.k2(data-key='k2')
-      li.key.k3(data-key='k3')
-      li.key.k4(data-key='k4')
-    ul.row
-      li.key.k5(data-key='k5')
-      li.key.k6(data-key='k6')
-      li.key.k7(data-key='k7')
-      li.key.k8(data-key='k8')
-    ul.row
-      li.key.k9(data-key='k9')
-      li.key.k10(data-key='k10')
-      li.key.k11(data-key='k11')
-      li.key.k12(data-key='k12')
-    ul.row
-      li.key.k13(data-key='k13')
-      li.key.k14(data-key='k14')
-      li.key.k15(data-key='k15')
-      li.key.k16(data-key='k16')
+    .open
+      h1.center
+
+      .key-wrapper-mobile
+        ul.row
+          li.key.k1(data-key='k1')
+          li.key.k2(data-key='k2')
+          li.key.k3(data-key='k3')
+          li.key.k4(data-key='k4')
+        ul.row
+          li.key.k5(data-key='k5')
+          li.key.k6(data-key='k6')
+          li.key.k7(data-key='k7')
+          li.key.k8(data-key='k8')
+        ul.row
+          li.key.k9(data-key='k9')
+          li.key.k10(data-key='k10')
+          li.key.k11(data-key='k11')
+          li.key.k12(data-key='k12')
+        ul.row
+          li.key.k13(data-key='k13')
+          li.key.k14(data-key='k14')
+          li.key.k15(data-key='k15')
+          li.key.k16(data-key='k16')

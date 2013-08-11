@@ -12,3 +12,21 @@ $(document).ready ->
   socket.on "activeNote", (data) ->
     $(".playing").removeClass("playing")
     $(".k" + data).addClass("playing")
+
+  socket.on "trackTitle", (data) ->
+    $("h1").text data
+
+  socket.on "activeClient", ->
+    $(".full").hide()
+    $(".open").show()
+
+  socket.on "inactiveClient", ->
+    $(".open").hide()
+    $(".full").show()
+
+  socket.on "clearAll", ->
+    $(".playing").removeClass("playing")
+
+    $("ul.row li.active").each (index, activeBeat) ->
+      $(activeBeat).removeClass("active")
+      socket.emit "toggle", $(activeBeat).data("key")

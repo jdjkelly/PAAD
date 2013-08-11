@@ -8,7 +8,7 @@
 
 html {
   height: 100%;
-  background: linear-gradient(#525252, #1e1e1e);
+  background: #525252;
   color: #ffeeff;
   font-family: "ds-digitalnormal", sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -17,9 +17,9 @@ html {
 .container {
   width: 962px;
   height: 610px;
-  background: url("/images/container.png");
+  background: url("/images/container.jpg");
   margin: 30px auto;
-  padding: 30px 30px 60px 30px;
+  padding: 28px 30px 60px 30px;
   box-shadow: 0px 0px 60px #111111;
   border-radius: 10px;
 }
@@ -240,9 +240,9 @@ span:hover {
 }
 
 .controls {
-  width: 183px;
+  width: 200px;
   float: left;
-  margin-left: 215px;
+  margin-left: 200px;
 }
 .controls a {
   display: block;
@@ -291,4 +291,38 @@ span:hover {
 }
 .controls .record.active {
   background: url("/images/controls-record-on.png");
+}
+
+.backing-track {
+  background: #222222;
+  border: none;
+  box-shadow: inset 0px 0px 10px black;
+  height: 20px;
+  border-radius: 3px;
+  color: #ff9000;
+  padding-left: 4px;
+  padding-right: 4px;
+  font-family: "ds-digitalnormal", sans-serif;
+  font-size: 17px;
+  float: right;
+  margin-right: 30px;
+  margin-top: 37px;
+  width: 100px;
+  text-align: center;
+}
+
+::-webkit-input-placeholder {
+  color: #ff9000;
+}
+
+.center {
+  text-align: center;
+}
+
+.no-bg h1 {
+  color: #ff9000;
+}
+
+.full {
+  display: none;
 }

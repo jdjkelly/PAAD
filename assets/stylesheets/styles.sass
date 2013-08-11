@@ -15,7 +15,7 @@ $font: 'ds-digitalnormal', sans-serif
 
 html
   height: 100%
-  background: linear-gradient(#525252, #1e1e1e) /* the standard */
+  background: #525252 /* the standard */
   color: $white
   font-family: $font
   -webkit-font-smoothing: antialiased
@@ -23,9 +23,9 @@ html
 .container
   width: 962px
   height: 610px
-  background: url("/images/container.png")
+  background: url("/images/container.jpg")
   margin: 30px auto
-  padding: 30px 30px 60px 30px
+  padding: 28px 30px 60px 30px
   box-shadow: 0px 0px 60px $black
   border-radius: 10px
 
@@ -240,9 +240,9 @@ span:hover
     margin-top: 2px
 
 .controls
-  width: 183px
+  width: 200px
   float: left
-  margin-left: 215px
+  margin-left: 200px
 
   a
     display: block
@@ -294,3 +294,34 @@ span:hover
 
     &.active
       background: url("/images/controls-record-on.png")
+
+.backing-track
+  background: rgb(34, 34, 34)
+  border: none
+  box-shadow: inset 0px 0px 10px rgb(0, 0, 0)
+  height: 20px
+  border-radius: 3px
+  color: $orange
+  padding-left: 4px
+  padding-right: 4px
+  font-family: $font
+  font-size: 17px
+
+  float: right
+  margin-right: 30px
+  margin-top: 37px
+  width: 100px
+  text-align: center
+
+::-webkit-input-placeholder
+  color: $orange
+
+.center
+  text-align: center
+
+.no-bg
+  h1
+    color: $orange
+
+.full
+  display: none

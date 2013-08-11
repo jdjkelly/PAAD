@@ -47,7 +47,10 @@ app.kit = undefined;
 io.sockets.on('connection', function (socket) {
   // We only have space for 16 bars
   if (app.clients.length >= 8) {
+    socket.emit('inactiveClient')
     return;
+  } else {
+    socket.emit('activeClient')
   }
 
   if (socket.id != app.kit) {
@@ -77,8 +80,16 @@ io.sockets.on('connection', function (socket) {
     socket.broadcast.emit('toggle', {socket: socket.id, message: data});
   });
 
+  socket.on('clearAll', function() {
+    socket.broadcast.emit('clearAll');
+  })
+
   socket.on('activeNote', function(data) {
     socket.broadcast.emit('activeNote', data)
+  })
+
+  socket.on('trackTitle', function(data) {
+    io.sockets.sockets[data["id"]].emit("trackTitle", data["title"])
   })
 
   // Oh no! Yer gone
