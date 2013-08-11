@@ -28,6 +28,11 @@
         } else {
           _this.activeNote = 1;
         }
+        if (_this.activeNote === 16) {
+          socket.emit("activeNote", 1);
+        } else {
+          socket.emit("activeNote", _this.activeNote + 1);
+        }
         $(".indicator.k" + _this.activeNote).addClass("active");
         return _.each(_this.tracks, function(track) {
           return track.play(_this.activeNote);
@@ -68,7 +73,7 @@
     Track.prototype.play = function(note) {
       if (this.beats[note - 1]) {
         console.log(this.beats[note - 1]);
-        playSound(loadedTracks[this.index], 0);
+        playSound(loadedTracks[this.index + (window.selectedKit * 7) - 1], 0);
         return $($("#" + this.id + " li")[note - 1]).addClass("playing");
       }
     };
@@ -128,10 +133,14 @@
 
   window.loadedTracks = void 0;
 
+  window.kits = [["Kick", "Hat", "Thing", "Whatever", "Something", "Stuff", "Whatever", "Otherthing"]];
+
+  window.selectedKit = 0;
+
   audioInit = function() {
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     context = new AudioContext();
-    bufferLoader = new BufferLoader(context, ["sounds/0.wav", "sounds/1.wav", "sounds/2.wav", "sounds/3.wav", "sounds/4.wav", "sounds/5.wav", "sounds/6.wav", "sounds/7.wav", "sounds/8.wav", "sounds/9.wav", "sounds/10.wav"], finishedLoading);
+    bufferLoader = new BufferLoader(context, ["sounds/kit1/0.wav", "sounds/kit1/1.wav", "sounds/kit1/2.wav", "sounds/kit1/3.wav", "sounds/kit1/4.wav", "sounds/kit1/5.wav", "sounds/kit1/6.wav", "sounds/kit1/7.wav"], finishedLoading);
     return bufferLoader.load();
   };
 
@@ -157,10 +166,11 @@
       return socket.emit("assignKitId", data);
     });
     socket.on("createSocket", function(data) {
-      $.tmpl("<div class='track-group'><div class='track-title'></div><ul id='${id}' class='row'><li class='key k1'>1</li><li class='key k2'>2</li><li class='key k3'>3</li><li class='key k4'>4</li><li class='key k5'>5</li><li class='key k6'>6</li><li class='key k7'>7</li><li class='key k8'>8</li><li class='key k9'>9</li><li class='key k10'>10</li><li class='key k11'>11</li><li class='key k12'>12</li><li class='key k13'>13</li><li class='key k14'>14</li><li class='key k15'>15</li><li class='key k16'>16</li></ul></div>", {
-        id: data
+      $.tmpl("<div class='track-group'><div class='track-title'>${name}</div><ul id='${id}' class='row'><li class='key k1'>1</li><li class='key k2'>2</li><li class='key k3'>3</li><li class='key k4'>4</li><li class='key k5'>5</li><li class='key k6'>6</li><li class='key k7'>7</li><li class='key k8'>8</li><li class='key k9'>9</li><li class='key k10'>10</li><li class='key k11'>11</li><li class='key k12'>12</li><li class='key k13'>13</li><li class='key k14'>14</li><li class='key k15'>15</li><li class='key k16'>16</li></ul></div>", {
+        id: data,
+        name: window.kits[window.selectedKit][sequencer.tracks.length]
       }).appendTo(".key-wrapper");
-      return sequencer.tracks.push(new Track(data, sequencer.tracks.length));
+      return sequencer.tracks.push(new Track(data, sequencer.tracks.length + 1));
     });
     socket.on("deleteSocket", function(data) {
       $("#" + data).parent().remove();
@@ -195,9 +205,15 @@
       $(".play").removeClass("active");
       return sequencer.stop();
     });
-    $(".bpm").val(sequencer.bpm);
-    return $(".bpm").blur(function() {
-      return sequencer.changeBpm($(this).val());
+    return $(".slider").noUiSlider({
+      range: [30, 280],
+      start: 130,
+      handles: 1,
+      step: 5,
+      slide: function() {
+        $(".bpm .count").text($(this).val());
+        return sequencer.changeBpm($(this).val());
+      }
     });
   });
 

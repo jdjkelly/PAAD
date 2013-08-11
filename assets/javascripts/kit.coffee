@@ -15,6 +15,10 @@ class Sequencer
         @activeNote = @activeNote + 1
       else
         @activeNote = 1
+      if @activeNote == 16
+        socket.emit("activeNote", 1)
+      else
+        socket.emit("activeNote", @activeNote + 1)
       $(".indicator.k" + @activeNote).addClass("active")
       _.each @tracks, (track)=>
         track.play(@activeNote)
@@ -59,7 +63,7 @@ class Track
   play: (note) ->
     if @beats[note - 1]
       console.log @beats[note - 1]
-      playSound(loadedTracks[@index], 0)
+      playSound(loadedTracks[@index + (window.selectedKit * 7) - 1], 0)
       $($("##{@id} li")[note - 1]).addClass("playing")
 
 
@@ -106,22 +110,22 @@ context = undefined
 bufferLoader = undefined
 window.loadedTracks = undefined
 
+window.kits = [["Kick", "Hat", "Thing", "Whatever", "Something", "Stuff", "Whatever", "Otherthing"]]
+window.selectedKit = 0
+
 audioInit = ->
   # Fix up prefixing
   window.AudioContext = window.AudioContext or window.webkitAudioContext
   context = new AudioContext()
   bufferLoader = new BufferLoader(context, [
-    "sounds/0.wav"
-    "sounds/1.wav"
-    "sounds/2.wav"
-    "sounds/3.wav"
-    "sounds/4.wav"
-    "sounds/5.wav"
-    "sounds/6.wav"
-    "sounds/7.wav"
-    "sounds/8.wav"
-    "sounds/9.wav"
-    "sounds/10.wav"
+    "sounds/kit1/0.wav"
+    "sounds/kit1/1.wav"
+    "sounds/kit1/2.wav"
+    "sounds/kit1/3.wav"
+    "sounds/kit1/4.wav"
+    "sounds/kit1/5.wav"
+    "sounds/kit1/6.wav"
+    "sounds/kit1/7.wav"
   ], finishedLoading)
   bufferLoader.load()
 finishedLoading = (bufferList) ->
@@ -144,11 +148,13 @@ $(document).ready ->
     socket.emit "assignKitId", data
 
   socket.on "createSocket", (data) ->
-    $.tmpl("<div class='track-group'><div class='track-title'></div><ul id='${id}' class='row'><li class='key k1'>1</li><li class='key k2'>2</li><li class='key k3'>3</li><li class='key k4'>4</li><li class='key k5'>5</li><li class='key k6'>6</li><li class='key k7'>7</li><li class='key k8'>8</li><li class='key k9'>9</li><li class='key k10'>10</li><li class='key k11'>11</li><li class='key k12'>12</li><li class='key k13'>13</li><li class='key k14'>14</li><li class='key k15'>15</li><li class='key k16'>16</li></ul></div>",
+    $.tmpl("<div class='track-group'><div class='track-title'>${name}</div><ul id='${id}' class='row'><li class='key k1'>1</li><li class='key k2'>2</li><li class='key k3'>3</li><li class='key k4'>4</li><li class='key k5'>5</li><li class='key k6'>6</li><li class='key k7'>7</li><li class='key k8'>8</li><li class='key k9'>9</li><li class='key k10'>10</li><li class='key k11'>11</li><li class='key k12'>12</li><li class='key k13'>13</li><li class='key k14'>14</li><li class='key k15'>15</li><li class='key k16'>16</li></ul></div>",
       id: data
+      name: window.kits[window.selectedKit][sequencer.tracks.length]
     ).appendTo ".key-wrapper"
 
-    sequencer.tracks.push new Track data, sequencer.tracks.length
+    sequencer.tracks.push new Track data, sequencer.tracks.length + 1
+
 
   socket.on "deleteSocket", (data) ->
     $("#" + data).parent().remove()
@@ -177,8 +183,16 @@ $(document).ready ->
     $(".play").removeClass("active")
     sequencer.stop()
 
-  $(".bpm").val(sequencer.bpm)
-  $(".bpm").blur ->
-    sequencer.changeBpm $(@).val()
+
+  $(".slider").noUiSlider(
+    range: [30, 280]
+    start: 130
+    handles: 1
+    step: 5
+    slide: ->
+      $(".bpm .count").text($(@).val())
+      sequencer.changeBpm $(@).val()
+  )
+
 
 

@@ -7,8 +7,12 @@
     socket.on("assignSocketId", function(data) {
       return socket.assignedId = data;
     });
-    return socket.on("deleteKitSocket", function() {
+    socket.on("deleteKitSocket", function() {
       return $("ul.row li").removeClass("active");
+    });
+    return socket.on("activeNote", function(data) {
+      $(".playing").removeClass("playing");
+      return $(".k" + data).addClass("playing");
     });
   });
 

@@ -46,7 +46,7 @@ app.kit = undefined;
 
 io.sockets.on('connection', function (socket) {
   // We only have space for 16 bars
-  if (app.clients.length > 16) {
+  if (app.clients.length >= 8) {
     return;
   }
 
@@ -76,6 +76,10 @@ io.sockets.on('connection', function (socket) {
     // console.log("KEYDOWN")
     socket.broadcast.emit('toggle', {socket: socket.id, message: data});
   });
+
+  socket.on('activeNote', function(data) {
+    socket.broadcast.emit('activeNote', data)
+  })
 
   // Oh no! Yer gone
   socket.on('disconnect', function () {

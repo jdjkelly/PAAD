@@ -3,6 +3,8 @@ extends layout
 block content
   body
     .container
+      script(src='/components/jquery-tmpl/jquery.tmpl.js')
+      script(src='/components/nouislider/jquery.nouislider.js')
       script(type='text/javascript').
         var socket = io.connect("http://#{host}:3000");
       script(src='/javascripts/kit.js')
@@ -10,6 +12,7 @@ block content
       .inner-container
 
         .key-wrapper
+          h3 track
           ul.row.indicators
             li.indicator.k1
             li.indicator.k2
@@ -31,7 +34,12 @@ block content
       .panel
 
         .fiddles
-          input.bpm(type='number')
+          .load-track
+          .noUiSlider.slider
+          .bpm
+            p
+              .count 130
+              .text bpm
 
         .controls
           a.stop Stop

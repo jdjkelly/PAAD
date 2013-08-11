@@ -8,3 +8,7 @@ $(document).ready ->
 
   socket.on "deleteKitSocket", ->
     $("ul.row li").removeClass("active")
+
+  socket.on "activeNote", (data) ->
+    $(".playing").removeClass("playing")
+    $(".k" + data).addClass("playing")

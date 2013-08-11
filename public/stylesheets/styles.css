@@ -1,8 +1,16 @@
+@font-face {
+  font-family: "ds-digitalnormal";
+  src: url("ds-digi-webfont.eot");
+  src: url("ds-digi-webfont.eot?#iefix") format("embedded-opentype"), url("ds-digi-webfont.woff") format("woff"), url("ds-digi-webfont.ttf") format("truetype"), url("ds-digi-webfont.svg#ds-digitalnormal") format("svg");
+  font-weight: bold;
+  font-style: normal;
+}
+
 html {
   height: 100%;
   background: linear-gradient(#525252, #1e1e1e);
   color: #ffeeff;
-  font-family: "PT sans", sans-serif;
+  font-family: "ds-digitalnormal", sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -47,34 +55,42 @@ span:hover {
 .key-wrapper {
   margin: 0 auto;
 }
-
-.track-group {
+.key-wrapper h3 {
+  width: 108px;
+  float: left;
+  color: #ff9000;
+  margin-left: 30px;
+  margin-right: 60px;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 16px;
+}
+.key-wrapper .track-group {
   margin: 0px 30px 4px 30px;
   float: left;
 }
-
-.track-title {
+.key-wrapper .track-title {
   background: url("/images/track-title.png");
-  width: 110px;
+  width: 100px;
   height: 42px;
   float: left;
   margin-top: 2px;
   margin-right: 57px;
+  line-height: 42px;
+  padding-left: 10px;
+  font-size: 20px;
+  color: #111111;
 }
-
-.row {
+.key-wrapper .row {
   margin: 0;
   padding: 0;
   text-align: center;
   float: left;
 }
-
-.indicators {
+.key-wrapper .indicators {
   height: 53px;
-  margin-left: 198px;
 }
-
-.indicator {
+.key-wrapper .indicator {
   width: 17px;
   height: 17px;
   margin: 21px 17px 12px 12px;
@@ -87,7 +103,7 @@ span:hover {
   -ms-transition: 0.5s;
   transition: 0.5s;
 }
-.indicator.active {
+.key-wrapper .indicator.active {
   background: url("/images/indicator-on.png");
   box-shadow: 0 0 30px 1px #e10000;
   -webkit-transition: 0s;
@@ -95,8 +111,7 @@ span:hover {
   -ms-transition: 0s;
   transition: 0s;
 }
-
-.key {
+.key-wrapper .key {
   margin: 2px 3px;
   width: 40px;
   height: 41px;
@@ -113,15 +128,63 @@ span:hover {
   -ms-transition: 0.5s;
   transition: 0.5s;
 }
-.key.active {
+.key-wrapper .key.active {
   background: url("/images/button-on.png");
   -webkit-transition: 0.1s;
   -moz-transition: 0.1s;
   -ms-transition: 0.1s;
   transition: 0.1s;
 }
-.key.playing {
+.key-wrapper .key.playing {
   background: url("/images/button-play.png");
+  box-shadow: 0 0 8px 0px #ffeeff;
+}
+
+.key-wrapper-mobile {
+  margin: 0 auto 40px;
+}
+.key-wrapper-mobile .track-group {
+  margin: 0px 30px 4px 30px;
+  float: left;
+}
+.key-wrapper-mobile .track-title {
+  background: url("/images/track-title.png");
+  width: 100px;
+  height: 42px;
+  float: left;
+  margin-top: 2px;
+  margin-right: 57px;
+  line-height: 42px;
+  padding-left: 10px;
+  font-size: 20px;
+  color: #111111;
+}
+.key-wrapper-mobile .row {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+.key-wrapper-mobile .row.active {
+  background: url("/images/indicator-on.png");
+  box-shadow: 0 0 30px 1px #e10000;
+}
+.key-wrapper-mobile .key {
+  margin: 4px 6px;
+  width: 60px;
+  height: 60px;
+  border-radius: 5px;
+  display: inline-block;
+  background: url("/images/button-off-big.png");
+  line-height: 36px;
+  text-indent: -9999px;
+  text-align: center;
+  text-transform: uppercase;
+}
+.key-wrapper-mobile .key.active {
+  background: url("/images/button-on-big.png");
+}
+.key-wrapper-mobile .key.playing {
+  background: url("/images/button-play-big.png");
   box-shadow: 0 0 8px 0px #ffeeff;
 }
 
@@ -137,6 +200,43 @@ span:hover {
   margin: 28px;
   width: 122px;
   float: left;
+}
+
+.load-track {
+  background: url("/images/fiddle-load-track.png");
+  width: 122px;
+  height: 25px;
+  margin-bottom: 20px;
+  margin-top: 5px;
+}
+
+.slider.horizontal {
+  width: 120px;
+  background: url("/images/slider.png");
+  border: none;
+  height: 13px;
+}
+.slider.horizontal div {
+  background: url("/images/slider-active.png") !important;
+  width: 23px !important;
+  height: 23px !important;
+  border: none !important;
+}
+
+.bpm {
+  width: 122px;
+  height: 21px;
+  margin-top: 14px;
+  color: #ff9000;
+  background: url("/images/fiddle-bpm.png");
+}
+.bpm div.count {
+  margin-left: 65px;
+}
+.bpm div {
+  float: left;
+  margin-right: 2px;
+  margin-top: 2px;
 }
 
 .controls {
