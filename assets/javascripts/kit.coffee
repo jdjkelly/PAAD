@@ -166,8 +166,15 @@ $(document).ready ->
       client.beats[parseInt(data["message"].replace(/\w/,'')) - 1] = true
 
   $(".play").click (event)->
+    $(this).addClass("active")
+    $(".stop").removeClass("active")
     sequencer.play()
   $(".stop").click (event)->
+    if $(this).hasClass("active")
+      $(this).removeClass("active")
+    else
+      $(this).addClass("active")
+    $(".play").removeClass("active")
     sequencer.stop()
 
   $(".bpm").val(sequencer.bpm)

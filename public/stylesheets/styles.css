@@ -132,3 +132,63 @@ span:hover {
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
+
+.fiddles {
+  margin: 28px;
+  width: 122px;
+  float: left;
+}
+
+.controls {
+  width: 183px;
+  float: left;
+  margin-left: 215px;
+}
+.controls a {
+  display: block;
+  cursor: pointer;
+  text-indent: -9999px;
+  float: left;
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -o-transition: 0.5s;
+  -ms-transition: 0.5s;
+  transition: 0.5s;
+}
+.controls .play {
+  width: 79px;
+  height: 80px;
+  margin-top: 40px;
+  background: url("/images/controls-play-off.png");
+}
+.controls .play:hover, .controls .play:active {
+  background: url("/images/controls-play-active.png");
+}
+.controls .play.active {
+  background: url("/images/controls-play-on.png");
+}
+.controls .stop, .controls .record {
+  width: 47px;
+  height: 48px;
+  margin-top: 55px;
+}
+.controls .stop {
+  margin-right: 3px;
+  background: url("/images/controls-stop-off.png");
+}
+.controls .stop:hover, .controls .stop:active {
+  background: url("/images/controls-stop-active.png");
+}
+.controls .stop.active {
+  background: url("/images/controls-stop-on.png");
+}
+.controls .record {
+  margin-left: 3px;
+  background: url("/images/controls-record-off.png");
+}
+.controls .record:hover, .controls .record:active {
+  background: url("/images/controls-record-active.png");
+}
+.controls .record.active {
+  background: url("/images/controls-record-on.png");
+}

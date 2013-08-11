@@ -132,3 +132,63 @@ span:hover
   border-bottom-left-radius: 5px
   border-bottom-right-radius: 5px
 
+.fiddles
+  margin: 28px
+  width: 122px
+  float: left
+
+.controls
+  width: 183px
+  float: left
+  margin-left: 215px
+
+  a
+    display: block
+    cursor: pointer
+    text-indent: -9999px
+    float: left
+
+    -webkit-transition: .5s
+    -moz-transition: .5s
+    -o-transition: .5s
+    -ms-transition: .5s
+    transition: .5s
+
+
+  .play
+    width: 79px
+    height: 80px
+    margin-top: 40px
+    background: url("/images/controls-play-off.png")
+
+
+    &:hover, &:active
+      background: url("/images/controls-play-active.png")
+
+    &.active
+      background: url("/images/controls-play-on.png")
+
+  .stop, .record
+    width: 47px
+    height: 48px
+    margin-top: 55px
+
+  .stop
+    margin-right: 3px
+    background: url("/images/controls-stop-off.png")
+
+    &:hover, &:active
+      background: url("/images/controls-stop-active.png")
+
+    &.active
+      background: url("/images/controls-stop-on.png")
+
+  .record
+    margin-left: 3px
+    background: url("/images/controls-record-off.png")
+
+    &:hover, &:active
+      background: url("/images/controls-record-active.png")
+
+    &.active
+      background: url("/images/controls-record-on.png")

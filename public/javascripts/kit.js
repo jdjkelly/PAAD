@@ -182,9 +182,17 @@
       }
     });
     $(".play").click(function(event) {
+      $(this).addClass("active");
+      $(".stop").removeClass("active");
       return sequencer.play();
     });
     $(".stop").click(function(event) {
+      if ($(this).hasClass("active")) {
+        $(this).removeClass("active");
+      } else {
+        $(this).addClass("active");
+      }
+      $(".play").removeClass("active");
       return sequencer.stop();
     });
     $(".bpm").val(sequencer.bpm);
